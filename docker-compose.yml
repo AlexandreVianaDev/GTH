@@ -3,7 +3,7 @@ services:
     image: postgres:14
     environment:
       POSTGRES_DB: mydb
-      POSTGRES_USER: user
+      POSTGRES_USER: Alexandre
       POSTGRES_PASSWORD: password
       POSTGRES_PORT: 5432
       POSTGRES_HOST_AUTH_METHOD: trust
@@ -17,7 +17,7 @@ services:
 
   web:
     build: ./bff
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: ["./entrypoint.sh"]
     volumes:
       - ./bff:/app
     ports:
@@ -25,7 +25,11 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://user:password@db:5432/mydb
+      DATABASE_URL: postgres://Alexandre:password@db:5432/mydb
+      POSTGRES_DB: mydb
+      POSTGRES_USER: Alexandre
+      POSTGRES_PASSWORD: password
+      POSTGRES_PORT: 5432
     networks:
       - mynetwork
 

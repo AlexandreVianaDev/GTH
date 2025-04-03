@@ -14,7 +14,6 @@ export const getPessoasRequest = async (filters: {
   sexo?: string;
 }) => {
   try {
-    // filters virarem query params
     const filtersSnakeCase = {
       nome: filters.nome,
       data_nasc: filters.dataNascimento,
@@ -53,7 +52,6 @@ export const getPessoasRequest = async (filters: {
 
 export const createPessoaRequest = async (payload: iPessoa) => {
   try {
-    console.log("payload", payload);
     const body = {
       nome: payload.nome,
       data_nasc: payload.dataNascimento.toISOString().split("T")[0],

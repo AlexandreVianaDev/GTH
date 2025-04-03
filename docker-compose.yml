@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: Alexandre
+      POSTGRES_PASSWORD: password
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    container_name: db
+    networks:
+      - mynetwork
+
+  web:
+    build: ./bff
+    command: ["./entrypoint.sh"]
+    volumes:
+      - ./bff:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://Alexandre:password@db:5432/mydb
+      POSTGRES_DB: mydb
+      POSTGRES_USER: Alexandre
+      POSTGRES_PASSWORD: password
+      POSTGRES_PORT: 5432
+    networks:
+      - mynetwork
+
+  frontend:
+    build:
+      context: ./ffb
+      dockerfile: Dockerfile
+    volumes:
+      - ./ffb:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: ["npm", "run", "dev"]
+    networks:
+      - mynetwork
+
+volumes:
+  postgres-data:
+
+networks:
+  mynetwork:
+    driver: bridge

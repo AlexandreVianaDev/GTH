@@ -33,6 +33,19 @@ services:
     networks:
       - mynetwork
 
+  frontend:
+    build:
+      context: ./ffb
+      dockerfile: Dockerfile
+    volumes:
+      - ./ffb:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    command: ["npm", "run", "dev"]
+    networks:
+      - mynetwork
+
 volumes:
   postgres-data:
 
